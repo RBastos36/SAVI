@@ -1,7 +1,7 @@
 
 import cv2 as cv
 import numpy as np
-import os
+
 
 # Open image and verify if path to image exists
 img = cv.imread("/home/rantonio/Desktop/SAVI/Parte02/images/lake.jpg")
