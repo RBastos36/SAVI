@@ -7,9 +7,9 @@ import os
 img = cv.imread("/home/rantonio/Desktop/SAVI/Parte02/images/lake.jpg")
 assert img is not None, "file could not be read, check with os.path.exists()"
 
-rows, cols = img.shape[:2]      # size of image
+rows, cols = img.shape[:2]      # Size of image
 
-# modify bgr values of every pixel in the right half of the photo and change it,
+# Modify bgr values of every pixel in the right half of the photo and change it,
 # progressively, to a darker color, saving the image at the end of the cycle
 for i in range(1, 6):
     for row in range(rows):
@@ -20,15 +20,15 @@ for i in range(1, 6):
             img[row, col, 0] = abs(blue - i * 5)
             img[row, col, 1] = abs(green - i * 5)
             img[row, col, 2] = abs(red - i * 5)
-    cv.imwrite("/Images1/{}.jpg".format(i), img)
+    cv.imwrite("Parte02/Images1/{}.jpg".format(i), img)
 
 
-pic_main = np.zeros((585, 780, 3), np.uint8)        # blank screen for the animation
-location = "/home/rantonio/Desktop/SAVI/Images1"    # frames location
+pic_main = np.zeros((585, 780, 3), np.uint8)                # Blank screen for the animation
+location = "/home/rantonio/Desktop/SAVI/Parte02/Images1"    # Frames location
 
-img_array = []      # Array to track video frames to save
+img_array = []      # Array to track video frames (images) to save
 
-# loop to show the frames of the nightfall created above, using a blended animation in between
+# Loop to show the frames of the nightfall created above, using a blended animation in between
 for file in range(1, 6):  
     pic = cv.imread(location + "/" + str(file) + ".jpg")
     height, width, layers = img.shape
@@ -46,7 +46,7 @@ for file in range(1, 6):
 
 
 # Capturing/Writing os the video frames
-out = cv.VideoWriter('project.avi', cv.VideoWriter_fourcc(*'DIVX'), 20, size)
+out = cv.VideoWriter('Parte02/Nightfall.avi', cv.VideoWriter_fourcc(*'DIVX'), 20, size)
 
 for i in range(len(img_array)):
     out.write(img_array[i])
