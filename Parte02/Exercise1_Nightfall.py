@@ -11,7 +11,7 @@ rows, cols = img.shape[:2]      # Size of image
 
 # Modify bgr values of every pixel in the right half of the photo and change it,
 # progressively, to a darker color, saving the image at the end of the cycle
-for i in range(1, 6):
+for i in range(1, 8):
     for row in range(rows):
         for col in range(cols // 2, cols):
             blue = img[row, col, 0]
@@ -29,7 +29,7 @@ location = "/home/rantonio/Desktop/SAVI/Parte02/Images1"    # Frames location
 img_array = []      # Array to track video frames (images) to save
 
 # Loop to show the frames of the nightfall created above, using a blended animation in between
-for file in range(1, 6):  
+for file in range(1, 8):  
     pic = cv.imread(location + "/" + str(file) + ".jpg")
     height, width, layers = img.shape
     size = (width, height)
