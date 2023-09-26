@@ -27,7 +27,6 @@ img_gray = cv.cvtColor(img_gray, cv.COLOR_GRAY2BGR)
 img_gray[top_left[1]:bottom_right[1], top_left[0]:bottom_right[0]] = model
 
 # Show final result
-cv.imshow("Test", res)
 cv.imshow("Where's Wally?", img_gray)
 cv.waitKey(0)
 cv.destroyAllWindows()
