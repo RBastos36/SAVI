@@ -4,9 +4,9 @@ import numpy as np
 
 
 # Read both images
-img1 = cv.imread("Parte02/images/school.jpg")
+img1 = cv.imread("Part02/images/school.jpg")
 assert img1 is not None, "file could not be read"
-img2 = cv.imread("Parte02/images/beach.jpg")
+img2 = cv.imread("Part02/images/beach.jpg")
 assert img2 is not None, "file could not be read"
 
 # Select Region of Interest from the first image and convert ROI to Image

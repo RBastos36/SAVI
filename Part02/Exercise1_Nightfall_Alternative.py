@@ -4,7 +4,7 @@ import numpy as np
 
 
 # Open image and verify if path to image exists
-img = cv.imread("/home/rantonio/Desktop/SAVI/Parte02/images/lake.jpg")
+img = cv.imread("/home/rantonio/Desktop/SAVI/Part02/images/lake.jpg")
 assert img is not None, "file could not be read, check with os.path.exists()"
 
 rows, cols = img.shape[:2]      # Size of image
@@ -32,7 +32,7 @@ for i in range(1, 8):
 
 
 pic_main = np.zeros((585, 780, 3), np.uint8)                # Blank screen for the animation
-location = "/home/rantonio/Desktop/SAVI/Parte02/Images1"    # Frames location
+location = "/home/rantonio/Desktop/SAVI/Part02/Images1"    # Frames location
 
 img_array = []      # Array to track video frames (images) to save
 

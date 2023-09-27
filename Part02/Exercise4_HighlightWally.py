@@ -3,9 +3,9 @@ import cv2 as cv
 import numpy as np
 
 # Read the image and the respective template
-img = cv.imread("Parte02/images/scene.jpg")
+img = cv.imread("Part02/images/scene.jpg")
 assert img is not None, "file could not be read"
-model = cv.imread("Parte02/images/wally.png")
+model = cv.imread("Parte2/images/wally.png")
 assert model is not None, "file could not be read"
 
 # Size of the template
