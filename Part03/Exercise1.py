@@ -1,5 +1,4 @@
 import cv2
-from time import sleep
 
 
 delay = 60
@@ -25,21 +24,17 @@ bg_subtractor = cv2.createBackgroundSubtractorMOG2(detectShadows=True)
 
 erode_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (5, 5))
 dilate_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (7, 31))
-# morph_kernel = cv2.getStructuringElement(cv2.MORPH_ELLIPSE, (3, 3))
 
 cap = cv2.VideoCapture('Part03/docs/traffic.mp4')
 success, frame = cap.read()
 
 while success:
 
-    # stime = float(1/delay)         
-    # sleep(stime)
 
     fg_mask = bg_subtractor.apply(frame)
     _, thresh = cv2.threshold(fg_mask, 244, 255, cv2.THRESH_BINARY)
     cv2.erode(thresh, erode_kernel, thresh, iterations=3)
     cv2.dilate(thresh, dilate_kernel, thresh, iterations=3)
-    # cv2.morphologyEx(thresh, cv2.MORPH_CLOSE, morph_kernel, thresh)
 
     contours, hier = cv2.findContours(thresh, cv2.RETR_EXTERNAL, cv2.CHAIN_APPROX_SIMPLE)
 
@@ -65,7 +60,6 @@ while success:
             if (y < (line_height + offset)) and (y > (line_height - offset)):
                 cars += 1
                 cv2.line(frame, (25, line_height), (1200, line_height), (255, 0, 255), 3)
-                # Create for loop to check detect array for points with y value immediately above the first original point
                 detect.remove((x, y))
                 check_x = x
                 check_y = y
