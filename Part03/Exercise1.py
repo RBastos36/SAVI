@@ -4,6 +4,8 @@ from time import sleep
 
 delay = 60
 detect = []
+check_x = None
+check_y = None
 cars = 0
 offset = 10
 
@@ -47,17 +49,27 @@ while success:
         if cv2.contourArea(c) > 1000:
             x, y, w, h = cv2.boundingRect(c)
             cv2.rectangle(frame, (x, y), (x + w, y + h), (255, 255, 0), 2)
-            center = get_center(x, y, w, h)                    
-            detect.append(center)
+            center = get_center(x, y, w, h)
+            if check_x is None and check_y is None:
+                detect.append(center)
+            else:
+              if check_x - offset <= center[0] <= check_x + offset and check_y - offset <= center[1] <= check_y + offset:
+                pass
+              else:
+                detect.append(center)
+                check = []
             cv2.circle(frame, center, 4, (0, 0, 255), -1)
 
-        for (x, y) in detect:                 
+        for (x, y) in detect:
             
             if (y < (line_height + offset)) and (y > (line_height - offset)):
                 cars += 1
                 cv2.line(frame, (25, line_height), (1200, line_height), (255, 0, 255), 3)
+                # Create for loop to check detect array for points with y value immediately above the first original point
                 detect.remove((x, y))
-                print("No. of cars detected : " + str(cars))
+                check_x = x
+                check_y = y
+                print("No. of cars detected: " + str(cars))
                 
     
     
