@@ -69,7 +69,6 @@ while success:
                 detect.remove((x, y))
                 check_x = x
                 check_y = y
-                # print("No. of cars detected: " + str(cars))
 
                 if (200 <= x <= 495):
                    faixa1 += 1

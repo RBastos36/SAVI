@@ -1,4 +1,5 @@
 import cv2
+import numpy as np
 
 
 delay = 60
@@ -7,10 +8,23 @@ check_x = None
 check_y = None
 cars = 0
 offset = 10
-faixa1 = 0
-faixa2 = 0
-faixa3 = 0
-faixa4 = 0
+lane1 = 0
+lane2 = 0
+lane3 = 0
+lane4 = 0
+
+red_lower = np.array([136, 87, 111], np.uint8)
+red_upper = np.array([180, 255, 255], np.uint8)
+green_lower = np.array([25, 52, 72], np.uint8)
+green_upper = np.array([102, 255, 255], np.uint8)
+blue_lower = np.array([94, 80, 2], np.uint8)
+blue_upper = np.array([120, 255, 255], np.uint8)
+yellow_lower = np.array([25,100,100])
+yellow_upper = np.array([30,255,255])
+dark_teal_lower = np.array([0,0,200])
+dark_teal_upper = np.array([180,255,255])
+bright_teal_lower = np.array([0,0,0])
+bright_teal_upper = np.array([180,255,100])
 
 line_height = 350
 
@@ -34,6 +48,7 @@ success, frame = cap.read()
 
 while success:
 
+    hsvFrame = cv2.cvtColor(frame, cv2.COLOR_BGR2HSV)
 
     fg_mask = bg_subtractor.apply(frame)
     _, thresh = cv2.threshold(fg_mask, 244, 255, cv2.THRESH_BINARY)
@@ -69,36 +84,61 @@ while success:
                 detect.remove((x, y))
                 check_x = x
                 check_y = y
-                # print("No. of cars detected: " + str(cars))
 
+
+
+                color = hsvFrame[center[1], center[0]]
+                if red_lower[0] <= color[0] <= red_upper[0] and red_lower[1] <= color[1] <= red_upper[1] and red_lower[2] <= color[2] <= red_upper[2]:
+                    color_str =  'Red'
+                elif green_lower[0] <= color[0] <= green_upper[0] and green_lower[1] <= color[1] <= green_upper[1] and green_lower[2] <= color[2] <= green_upper[2]:
+                    color_str = 'Green'
+                elif blue_lower[0] <= color[0] <= blue_upper[0] and blue_lower[1] <= color[1] <= blue_upper[1] and blue_lower[2] <= color[2] <= blue_upper[2]:
+                    color_str = 'Blue'
+                elif yellow_lower[0] <= color[0] <= yellow_upper[0] and yellow_lower[1] <= color[1] <= yellow_upper[1] and yellow_lower[2] <= color[2] <= yellow_upper[2]:
+                    color_str = 'Yellow'
+                elif dark_teal_lower[0] <= color[0] <= dark_teal_upper[0] and dark_teal_lower[1] <= color[1] <= dark_teal_upper[1] and dark_teal_lower[2] <= color[2] <= dark_teal_upper[2]:
+                    color_str = 'Dark Color'
+                elif bright_teal_lower[0] <= color[0] <= bright_teal_upper[0] and bright_teal_lower[1] <= color[1]<= bright_teal_upper[1] and bright_teal_lower[2] <= color[2] <= bright_teal_upper[2]:
+                    color_str = 'Bright Color'
+                else:
+                    color_str = 'Other'
+
+
+                lane = 0
                 if (200 <= x <= 495):
-                   faixa1 += 1
-                   print("No. of cars detected: {}\nTotal por Faixa: [{}] [{}] [{}] [{}]\n".format(str(cars),
-                                                                                                 str(faixa1), str(faixa2), str(faixa3), str(faixa4)))
+                   lane1 += 1
+                   lane = 1
+                   print("No. of cars detected: {}\nTotal by Lane: [{}] [{}] [{}] [{}]\n".format(str(cars),
+                                                                                                 str(lane1), str(lane2), str(lane3), str(lane4)))
                    cv2.line(frame, (200, line_height), (495, line_height), (255, 0, 255), 3)
                    
                 elif (495 < x <= 660):
-                   faixa2 += 1
-                   print("No. of cars detected: {}\nTotal por Faixa: [{}] [{}] [{}] [{}]\n".format(str(cars),
-                                                                                                 str(faixa1), str(faixa2), str(faixa3), str(faixa4)))
+                   lane2 += 1
+                   lane = 2
+                   print("No. of cars detected: {}\nTotal by Lane: [{}] [{}] [{}] [{}]\n".format(str(cars),
+                                                                                                 str(lane1), str(lane2), str(lane3), str(lane4)))
                    cv2.line(frame, (495, line_height), (660, line_height), (255, 0, 255), 3)
 
                 elif(660 < x <= 840):
-                   faixa3 += 1
+                   lane3 += 1
+                   lane = 3
                    print("No. of cars detected: {}\nTotal by lane: [{}] [{}] [{}] [{}]\n".format(str(cars),
-                                                                                                 str(faixa1), str(faixa2), str(faixa3), str(faixa4)))
+                                                                                                 str(lane1), str(lane2), str(lane3), str(lane4)))
                    cv2.line(frame, (660, line_height), (840, line_height), (255, 0, 255), 3)
 
                 elif (840 < x <= 1200):
-                   faixa4 += 1
+                   lane4 += 1
+                   lane = 4
                    print("No. of cars detected: {}\nTotal por Faixa: [{}] [{}] [{}] [{}]\n".format(str(cars),
-                                                                                                 str(faixa1), str(faixa2), str(faixa3), str(faixa4)))
+                                                                                                 str(lane1), str(lane2), str(lane3), str(lane4)))
                    cv2.line(frame, (840, line_height), (1200, line_height), (255, 0, 255), 3)
+                
+                print("Last car in lane no. {}; Color: {}\n".format(str(lane), color_str))
                 
     
     
     cv2.putText(frame, "VEHICLE COUNT: "+str(cars), (50, 70), cv2.FONT_HERSHEY_COMPLEX, 2, (255, 0, 0), 4)
-    cv2.putText(frame, "[{}] [{}] [{}] [{}]".format(str(faixa1), str(faixa2), str(faixa3), str(faixa4)), (50, 140), cv2.FONT_HERSHEY_COMPLEX, 2, (255, 0, 0), 4)
+    cv2.putText(frame, "[{}] [{}] [{}] [{}]".format(str(lane1), str(lane2), str(lane3), str(lane4)), (50, 140), cv2.FONT_HERSHEY_COMPLEX, 2, (255, 0, 0), 4)
 
     cv2.imshow('mog', fg_mask)
     cv2.imshow('thresh', thresh)
